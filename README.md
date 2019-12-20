@@ -9,6 +9,6 @@ Python+Django+Bootstrap，自动化测试平台
 添加接口用例
 ![add_apitest](https://github.com/kyrie-Kuang/auto_test/blob/master/add_apitest.png)
 Bug列表
-![bug_list](https://github.com/kyrie-Kuang/auto_test/blob/master/bug_list.png)
+![bug_l](https://github.com/kyrie-Kuang/auto_test/blob/master/bug_l.png)
 
 
