@@ -5,7 +5,7 @@ Python+Django+Bootstrap，自动化测试平台
 产品列表
 ![product](https://github.com/kyrie-Kuang/auto_test/blob/master/product.png)
 接口用例列表
-![apitest](https://github.com/kyrie-Kuang/auto_test/blob/master/apitest.png)
+![apitest](https://github.com/kyrie-Kuang/auto_test/blob/master/api_test.png)
 添加接口用例
 ![add_apitest](https://github.com/kyrie-Kuang/auto_test/blob/master/add_apitest.png)
 Bug列表
