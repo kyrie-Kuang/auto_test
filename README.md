@@ -1,15 +1,16 @@
 # auto_test
 Python+Django+Bootstrap，自动化测试平台
 
-演示平台自动化测试步骤：（例：web自动化测试用例）
+演示：自动化平台测试步骤：（例：web自动化测试用例）
 1，添加相关产品
 2，添加web自动化测试用例
 3，添加web自动化测试用例步骤
-4，运行web自动化测试py 文件case
-5，可在报告页面查看报告目录文件路径
+4，运行web自动化测试case py文件
+5，可在报告页面查看报告文件路径
 6，打开html报告文件查看执行情况
 （可集成到Jenkins持续集成）
 （可进行Locust的性能测试）
+
 首页
 ![home](https://github.com/kyrie-Kuang/auto_test/blob/master/home.png)
 产品列表
