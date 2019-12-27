@@ -15,7 +15,7 @@ Python+Django+Bootstrap，自动化测试平台
 产品列表
 ![product](https://github.com/kyrie-Kuang/auto_test/blob/master/product.png)
 web自动化用例列表
-![product](https://github.com/kyrie-Kuang/auto_test/blob/master/web_case.png)
+![product](https://github.com/kyrie-Kuang/auto_test/blob/master/web_test.png)
 
 web自动化用例步骤列表
 ![product](https://github.com/kyrie-Kuang/auto_test/blob/master/web_step.png)
