@@ -1,0 +1,55 @@
+{% extends 'home.html' %}
+{% load static %}
+
+{% block ext_css %}
+    {{ block.super }}
+    <link rel="stylesheet" href="{% static 'css/add_apis.css' %}">
+{% endblock %}
+
+{% block content %}
+    <div class="content">
+        <div id="test_content_apis">
+            <h3 id="add_test_name">编辑Web用例</h3>
+            <div id="title_apis">
+                <form id="product_input" method="post" action="{% url 'at:web_update' %}?web_t.id={{ web_t.id }}">
+                    {% csrf_token %}
+                    <div class="form-group">
+                        <label id='product_name_distance' for="p_name_input">产品：</label>
+                        <br><br>
+                        <select class="form-control" name="dropdown">
+                            {% for pro_name in pro_names %}
+                                <option  value="{{ pro_name.pk }}">
+                                    {{ pro_name.p_product_name }}
+                                </option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label id='product_name_distance' for="p_des_input">Web用例名称：</label>
+                        <br><br>
+                        <input name="web_t_name" type="text" class="form-control" id="p_des_input"
+                               placeholder="输入Web用例名称" value="{{ web_t.web_t_name }}">
+                    </div>
+                    <div class="form-group">
+                        <label id='product_name_distance' for="p_er_input">Web用例描述：</label>
+                        <br><br>
+                        <input name="web_t_desc" type="text" class="form-control" id="p_er_input" placeholder="输入Web用例描述" value="{{ web_t.web_t_desc }}">
+                    </div>
+                    <div class="form-group">
+                        <label id='product_name_distance' for="p_er_input">测试负责人：</label>
+                        <br><br>
+                        <input name="web_ter" type="text" class="form-control" id="p_er_input" placeholder="输入测试负责人" value="{{ web_t.web_ter }}">
+                    </div>
+                    <div class="form-group">
+                        <label id='product_name_distance' for="p_er_input">测试结果：</label>
+                        <br><br>
+                        <input name="web_t_res" value="1" type="checkbox" >True
+                        &nbsp
+                        <input name="web_t_res" value="0" type="checkbox" >False
+                    </div>
+                    <button type="submit" class="btn">保存</button>
+                </form>
+            </div>
+        </div>
+    </div>
+{% endblock %}

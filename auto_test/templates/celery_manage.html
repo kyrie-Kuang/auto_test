@@ -1,0 +1,183 @@
+{% extends 'home.html' %}
+{% load static %}
+{% block ext_css %}
+    {{ block.super }}
+    <link rel="stylesheet" href="{% static 'css/product_manage.css' %}">
+{% endblock %}
+
+{% block content %}
+    <div class="content">
+        <div id="product_content">
+            <h3 id="add_product_name">任务列表</h3>
+            <a id="add_product" href="../../admin/djcelery/periodictask" target="_blank">＋添加任务</a>
+            <a id="celery" href="{% url 'at:celery_page' %}">启动Celery条件</a>
+
+            <form id="" method="post" action="{% url 'at:celery_manage' %}">
+                {% csrf_token %}
+                <table class="table-striped" id="table_list">
+                    <thead>
+                    <tr id="tr_title">
+                        <th id="table_title_length">ID</th>
+                        <th id="table_title_length2">任务名称</th>
+                        <th id="table_title_length2">任务模块</th>
+                        <th id="table_title_length4">时间计划</th>
+                        <th id="table_title_length4">修改时间</th>
+                        <th id="table_title_length">开启</th>
+                        <th id="table_title_length">操作</th>
+                        <th id="table_title_length">编辑</th>
+                        <th id="table_title_length">删除</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for task in task_list %}{% for periodic in periodic_list %}
+
+                        <tr id="tr_d">
+                            {% if task.interval_id != null and task.interval_id == periodic.id %}
+                                <td>{{ task.id }}</td>
+                                <td>{{ task.name }}</td>
+                                <td>{{ task.task }}</td>
+                                <td><a style="color: green">
+                                    每{{ periodic.period }} {{ periodic.every }}次
+                                </a>
+                                </td>
+                                <td>{{ task.date_changed }}</td>
+                                <td>{{ task.enabled }}</td>
+                                <td>{% if task.id == 1 %}
+                                    <a href="../do" target="_blank">运行</a>
+                                    </td>
+                                {% endif %}
+                                <td><a style="color:cadetblue "
+                                       href="../../admin/djcelery/periodictask/{{ task.id }}/change/?_to_field=id&_popup=1"
+                                       target="_blank">编辑</a>
+                                </td>
+                                <td><a style="color: #cc0000"
+                                       href="javascript:" onclick="confirm_delete(this,{{ task.id }})">删除</a>
+                                </td>
+                                </tr>
+                            {% endif %}
+
+                        {% for cron in cron_list %}
+
+                            {% if task.crontab_id != null and task.crontab_id == cron.id %}
+                                <td>{{ task.id }}</td>
+                                <td>{{ task.name }}</td>
+                                <td>{{ task.task }}</td>
+                                <td><a style="color:green">{{ cron.month_of_year }}年
+                                    {{ cron.day_of_month }}月
+                                    {{ cron.day_of_week }}日
+                                    {{ cron.hour }}时
+                                    {{ cron.minute }}分
+                                </a>
+                                </td>
+                                <td>{{ task.date_changed }}</td>
+                                <td>{{ task.enabled }}</td>
+                               <td>{% if task.id == 1 %}
+                                    <a href="../do" target="_blank">运行</a>
+                                    </td>
+                                {% endif %}
+                                <td><a style="color:cadetblue "
+                                       href="../../admin/djcelery/periodictask/{{ task.id }}/change/?_to_field=id&_popup=1"
+                                       target="_blank">编辑</a>
+                                </td>
+                                <td><a style="color: #cc0000"
+                                       href="javascript:" onclick="confirm_delete(this,{{ task.id }})">删除</a>
+                                </td>
+                            {% endif %}
+                        {% endfor %}
+                    {% endfor %}
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </form>
+
+
+            <!--分页-->
+            <div id="pager">
+                <nav aria-label="Page navigation">
+                    <ul class="pagination">
+
+                        {% if products.has_previous %}
+                            <li>
+                                <a href="{% url 'at:pro_search' %}?&p_product_name={{ search_name }}&page={{ products.previous_page_number }}"
+                                   aria-label="Previous">
+                                    <span aria-hidden="true">&laquo;</span>
+                                </a>
+                            </li>
+
+                        {% else %}
+                            <li class="disabled">
+                                <a href="#" aria-label="Next">
+                                    <span aria-hidden="true">&raquo;</span>
+                                </a>
+                            </li>
+                        {% endif %}
+
+                        {% for page_index in products.paginator.page_range %}
+                            {% ifequal page_index  products.number %}
+                                <li class="active">
+                                    <a style="background: cadetblue"
+                                       href="?p_product_name={{ search_name }}&page={{ page_index }}">{{ page_index }}</a>
+                                </li>
+                            {% else %}
+                                <li>
+                                    <a href="?p_product_name={{ search_name }}&page={{ page_index }}">{{ page_index }}</a>
+                                </li>
+                            {% endifequal %}
+
+                        {% endfor %}
+
+                        {% if products.has_next %}
+                            <li>
+                                <a href="{% url 'at:pro_search' %}?p_product_name={{ search_name }}&page={{ products.next_page_number }}"
+                                   aria-label="Next">
+                                    <span aria-hidden="true">&raquo;</span>
+                                </a>
+                            </li>
+                        {% else %}
+                            <li class="disabled">
+                                <a href="#" aria-label="Next">
+                                    <span aria-hidden="true">&raquo;</span>
+                                </a>
+                            </li>
+                        {% endif %}
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </div>
+    <script type="text/javascript">
+        //删除文章函数
+        function confirm_delete(the, task_id) {
+            {#var pro_name = $(the).parents("tr").children("td").eq(1).text();#}
+            //调用layer函数
+            layer.open({
+                type: 1,
+                skin: "layui-layer-rim",
+                area: ["190", "110px"],
+
+                //弹窗标题
+                title: "删除",
+                content: "确认删除？",
+                //点击确定后调用的回调函数
+                btn: ['确定', '取消'], yes: function () {
+                    $.ajax({
+                        url: '{% url "at:celery_delete" %}',
+                        type: "GET",
+                        data: {"task_id": task_id},
+                        success: function (e) {
+                            if (e == "1") {
+                                parent.location.reload();
+                                layer.msg("已删除");
+                            } else {
+                                layer.msg("删除失败");
+                            }
+                        }
+                    })
+                },
+            })
+        }
+
+    </script>
+
+
+{% endblock %}

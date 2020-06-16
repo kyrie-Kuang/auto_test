@@ -1,0 +1,74 @@
+{% extends 'home.html' %}
+{% load static %}
+
+{% block ext_css %}
+    {{ block.super }}
+    <link rel="stylesheet" href="{% static 'css/add_apis.css' %}">
+{% endblock %}
+
+{% block content %}
+    <div class="content">
+        <div id="test_content_apis">
+            <h3 id="add_test_name">添加App用例步骤</h3>
+            <div id="title_apis">
+                <form id="product_input" method="post" action="{% url 'at:add_app_step' %}">
+                    {% csrf_token %}
+                    <div class="form-group">
+                        <label id='product_name_distance' for="p_name_input">所属用例：</label>
+                        <br><br>
+                        <select class="form-control" name="dropdown">
+                            {% for app_t in app_test %}
+                                <option value="{{ app_t.pk }}">
+                                    {{ app_t.app_t_name }}
+                                </option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label id='product_name_distance' for="p_des_input">测试步骤：</label>
+                        <br><br>
+                        <input name="app_step" type="text" class="form-control" id="p_des_input"
+                               placeholder="输入测试步骤">
+                    </div>
+                    <div class="form-group">
+                        <label id='product_name_distance' for="p_des_input">定位方式：</label>
+                        <br><br>
+                        <input name="app_find_method" type="text" class="form-control" id="p_des_input"
+                               placeholder="输入定位方式">
+                    </div>
+                    <div class="form-group">
+                        <label id='product_name_distance' for="p_er_input">控件元素：</label>
+                        <br><br>
+                        <input name="app_element" type="text" class="form-control" id="p_er_input" placeholder="输入控件元素">
+                    </div>
+                    <div class="form-group">
+                        <label id='product_name_distance' for="p_er_input">操作方法：</label>
+                        <br><br>
+                        <input name="app_opt_method" type="text" class="form-control" id="p_er_input"
+                               placeholder="输入操作方法">
+                    </div>
+                    <div class="form-group">
+                        <label id='product_name_distance' for="p_er_input">测试数据：</label>
+                        <br><br>
+                        <input name="app_test_data" type="text" class="form-control" id="p_er_input"
+                               placeholder="输入测试数据">
+                    </div>
+                    <div class="form-group">
+                        <label id='product_name_distance' for="p_er_input">验证数据：</label>
+                        <br><br>
+                        <input name="app_assert_data" type="text" class="form-control" id="p_er_input"
+                               placeholder="输入验证数据">
+                    </div>
+                    <div class="form-group">
+                        <label id='product_name_distance' for="p_er_input">测试结果：</label>
+                        <br><br>
+                        <input name="app_result" value="1" type="checkbox">True
+                        &nbsp
+                        <input name="app_result" value="0" type="checkbox">False
+                    </div>
+                    <button type="submit" class="btn">保存</button>
+                </form>
+            </div>
+        </div>
+    </div>
+{% endblock %}

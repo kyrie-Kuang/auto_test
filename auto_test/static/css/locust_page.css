@@ -1,0 +1,53 @@
+.content {
+    background: rgba(242, 245, 244, 0.94);
+
+}
+
+#product_content {
+    position: absolute;
+    background: white;
+    top: 20px;
+    left: 25px;
+    height: 600px;
+    width: 96%;
+}
+
+#title_name {
+    position: absolute;
+    color: cadetblue;
+    top: 20px;
+    left: 50px;
+
+}
+
+#title_link {
+    position: absolute;
+    color: cadetblue;
+    top: 70px;
+    left: 50px;
+
+}
+
+#opt_link {
+    position: absolute;
+    color: cadetblue;
+    top: 120px;
+    left: 50px;
+
+}
+
+#locust_link {
+    position: absolute;
+    color: azure;
+    top: 220px;
+    left: 100px;
+    height: 30px;
+    width: 200px;
+    background: cadetblue;
+    border-radius: 15px;
+    text-decoration: none;
+    text-align: center;
+    font-size: 15px;
+    padding-top: 3px;
+
+}

@@ -1,0 +1,144 @@
+{% extends 'home.html' %}
+{% load static %}
+{% block ext_css %}
+    {{ block.super }}
+    <link rel="stylesheet" href="{% static 'css/product_manage.css' %}">
+{% endblock %}
+
+{% block content %}
+    <div class="content">
+        <div id="product_content">
+            <h3 id="add_product_name">产品列表</h3>
+            <a id="add_product" href={% url 'at:add_product' %}>＋添加产品</a>
+            <div id="search_p">
+                <form method="get" action="{% url 'at:pro_search' %}">
+                    {% csrf_token %}
+                    <input style="" type="search" name="p_product_name" placeholder="输入产品名称">
+                    &nbsp;<button type="submit" id="search_b" class="btn btn-default">搜索</button>
+                </form>
+            </div>
+
+            <form id="" method="post" action="{% url 'at:product_manage' %}">
+                {% csrf_token %}
+                <table class="table-striped" id="table_list">
+                    <thead>
+                    <tr id="tr_title">
+                        <th id="table_title_length">ID</th>
+                        <th id="table_title_length2">产品名称</th>
+                        <th id="table_title_length2">产品描述</th>
+                        <th id="table_title_length3">产品负责人</th>
+                        <th id="table_title_length3">时间</th>
+                        <th id="table_title_length">编辑</th>
+                        <th id="table_title_length">删除</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for product in products %}
+                        <tr id="tr_d">
+                            <td>{{ product.id }}</td>
+                            <td>{{ product.p_product_name }}</td>
+                            <td>{{ product.p_product_desc }}</td>
+                            <td>{{ product.p_product_er }}</td>
+                            <td>{{ product.create_time }}</td>
+                            <td>
+                                <a style="color: cadetblue"
+                                   href="{% url 'at:update_product' %}?product.id={{ product.id }}">编辑</a>
+                            </td>
+                            <td><a style="color: #cc0000"
+                                   href="javascript:" onclick="confirm_delete(this,{{ product.id }})">删除</a></td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </form>
+
+            <!--分页-->
+            <div id="pager">
+                <nav aria-label="Page navigation">
+                    <ul class="pagination">
+
+                        {% if products.has_previous %}
+                            <li>
+                                <a href="{% url 'at:pro_search' %}?&p_product_name={{ search_name }}&page={{ products.previous_page_number }}"
+                                   aria-label="Previous">
+                                    <span aria-hidden="true">&laquo;</span>
+                                </a>
+                            </li>
+
+                        {% else %}
+                            <li class="disabled">
+                                <a href="#" aria-label="Next">
+                                    <span aria-hidden="true">&raquo;</span>
+                                </a>
+                            </li>
+                        {% endif %}
+
+                        {% for page_index in products.paginator.page_range %}
+                            {% ifequal page_index  products.number %}
+                                <li class="active">
+                                    <a style="background: cadetblue"
+                                       href="?p_product_name={{ search_name }}&page={{ page_index }}">{{ page_index }}</a>
+                                </li>
+                            {% else %}
+                                <li>
+                                    <a href="?p_product_name={{ search_name }}&page={{ page_index }}">{{ page_index }}</a>
+                                </li>
+                            {% endifequal %}
+
+                        {% endfor %}
+
+                        {% if products.has_next %}
+                            <li>
+                                <a href="{% url 'at:pro_search' %}?p_product_name={{ search_name }}&page={{ products.next_page_number }}"
+                                   aria-label="Next">
+                                    <span aria-hidden="true">&raquo;</span>
+                                </a>
+                            </li>
+                        {% else %}
+                            <li class="disabled">
+                                <a href="#" aria-label="Next">
+                                    <span aria-hidden="true">&raquo;</span>
+                                </a>
+                            </li>
+                        {% endif %}
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </div>
+    <script type="text/javascript">
+        //删除文章函数
+        function confirm_delete(the, product_id) {
+            {#var pro_name = $(the).parents("tr").children("td").eq(1).text();#}
+            //调用layer函数
+            layer.open({
+                type: 1,
+                skin: "layui-layer-rim",
+                area: ["190", "110px"],
+
+                //弹窗标题
+                title: "删除",
+                content: "确认删除？",
+                //点击确定后调用的回调函数
+                btn: ['确定', '取消'], yes: function () {
+                    $.ajax({
+                        url: '{% url "at:product_delete" %}',
+                        type: "GET",
+                        data: {"product_id": product_id},
+                        success: function (e) {
+                            if (e == "1") {
+                                parent.location.reload();
+                                layer.msg("已删除");
+                            } else {
+                                layer.msg("删除失败");
+                            }
+                        }
+                    })
+                },
+            })
+        }
+
+    </script>
+
+
+{% endblock %}

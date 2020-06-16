@@ -1,0 +1,156 @@
+{% extends 'home.html' %}
+{% load static %}
+{% block ext_css %}
+    {{ block.super }}
+    <link rel="stylesheet" href="{% static 'css/bug_manage.css' %}">
+{% endblock %}
+
+{% block content %}
+    <div class="content">
+        <div id="product_content">
+            <h3 id="add_product_name">Bug列表</h3>
+            <a id="add_product" href={% url 'at:add_bug' %}>＋添加Bug</a>
+            <div id="search_p">
+                <form method="get" action="{% url 'at:bug_search' %}">
+                    {% csrf_token %}
+                    <input style="" type="search" name="bug_name" placeholder="输入Bug名称">
+                    &nbsp;<button type="submit" id="search_b" class="btn btn-default">搜索</button>
+                </form>
+            </div>
+
+            <form id="" method="post" action="{% url 'at:bug_manage' %}">
+                {% csrf_token %}
+                <table class="table-striped" id="table_list">
+                    <thead>
+                    <tr id="tr_title">
+                        <th id="table_title_length">ID</th>
+                        <th id="table_title_length3">产品名称</th>
+                        <th id="table_title_length3">Bug名称</th>
+                        <th id="table_title_length2">Bug详情</th>
+                        <th id="table_title_length">严重程度</th>
+                        <th id="table_title_length">解决状态</th>
+                        <th id="table_title_length">创建人</th>
+                        <th id="table_title_length">分配给</th>
+                        <th id="table_title_length3">创建时间</th>
+                        <th id="table_title_length">编辑</th>
+                        <th id="table_title_length">删除</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for bug in bugs %}
+                        <tr id="tr_d">
+                            <td>{{ bug.id }}</td>
+                            <td>{{ bug.bug_pro.p_product_name }}</td>
+                            <td>{{ bug.bug_name }}</td>
+                            <td>{{ bug.bug_detail }}</td>
+                            <td>{% if bug.bug_level == "轻微" %}
+                                <a style="color:green;text-decoration: none;">{{ bug.bug_level }}</a>
+                            {% elif bug.bug_level == "一般" %}
+                                <a style="color:gold;text-decoration: none;">{{ bug.bug_level }}</a>
+                            {% elif bug.bug_level == "严重" %}
+                                <a style="color:red;text-decoration: none;">{{ bug.bug_level }}</a>
+                            {% endif %}
+                            </td>
+                            <td>{% if bug.bug_status == "激活" %}
+                                <a style="color:red;text-decoration: none;">{{ bug.bug_status }}</a>
+                            {% elif bug.bug_status == "已解决" %}
+                                <a style="color:green;text-decoration: none;">{{ bug.bug_status }}</a>
+                            {% elif bug.bug_status == "已关闭" %}
+                                <a style="color: black;text-decoration: none;">{{ bug.bug_status }}</a>
+                            {% endif %}
+                            </td>
+                            <td>{{ bug.bug_creat_er }}</td>
+                            <td>{{ bug.bug_assign }}</td>
+                            <td>{{ bug.create_time }}</td>
+                            <td><a style="color:cadetblue " href="{% url 'at:bug_update' %}?bug.id={{ bug.id }}">编辑</a></td>
+                            <td><a style="color: #cc0000" href="javascript:"
+                                   onclick="confirm_delete(this,{{ bug.id }})">删除</a>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </form>
+            <!--分页-->
+            <div id="pager">
+                <nav aria-label="Page navigation">
+                    <ul class="pagination">
+
+                        {% if bugs.has_previous %}
+                            <li>
+                                <a href="{% url 'at:bug_search' %}?page={{ bugs.previous_page_number }}&bug_name={{ search_name }}"
+                                   aria-label="Previous">
+                                    <span aria-hidden="true">&laquo;</span>
+                                </a>
+                            </li>
+
+                        {% else %}
+                            <li class="disabled">
+                                <a href="#" aria-label="Next">
+                                    <span aria-hidden="true">&raquo;</span>
+                                </a>
+                            </li>
+                        {% endif %}
+
+                        {% for page_index in bugs.paginator.page_range %}
+                            {% ifequal page_index  bugs.number %}
+                                <li class="active">
+                                    <a style="background: cadetblue"
+                                       href="?bug_name={{ search_name }}&page={{ page_index }}">{{ page_index }}</a>
+                                </li>
+                            {% else %}
+                                <li>
+                                    <a href="?bug_name={{ search_name }}&page={{ page_index }}">{{ page_index }}</a>
+                                </li>
+                            {% endifequal %}
+
+                        {% endfor %}
+
+                        {% if bugs.has_next %}
+                            <li>
+                                <a href="{% url 'at:bug_search' %}?page={{ bugs.next_page_number }}&bug_name={{ search_name }}"
+                                   aria-label="Next">
+                                    <span aria-hidden="true">&raquo;</span>
+                                </a>
+                            </li>
+                        {% else %}
+                            <li class="disabled">
+                                <a href="#" aria-label="Next">
+                                    <span aria-hidden="true">&raquo;</span>
+                                </a>
+                            </li>
+                        {% endif %}
+
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </div>
+    <script type="text/javascript">
+        function confirm_delete(the, bug_id) {
+            layer.open({
+                type: 1,
+                skin: "layui-layer-rim",
+                area: ["190", "110px"],
+                title: "删除",
+                content: "确认删除？",
+                btn: ['确定', '取消'], yes: function () {
+                    $.ajax({
+                        url: '{% url "at:bug_delete" %}',
+                        type: "GET",
+                        data: {"bug_id": bug_id},
+                        success: function (e) {
+                            if (e == "1") {
+                                parent.location.reload();
+                                layer.msg("已删除");
+                            } else {
+                                layer.msg("删除失败");
+                            }
+                        }
+                    })
+                },
+            })
+        }
+    </script>
+
+{% endblock %}

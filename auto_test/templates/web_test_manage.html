@@ -1,0 +1,158 @@
+{% extends 'home.html' %}
+{% load static %}
+{% block ext_css %}
+    {{ block.super }}
+    <link rel="stylesheet" href="{% static 'css/app_test_manage.css' %}">
+{% endblock %}
+
+{% block content %}
+    <div class="content">
+        <div id="test_content">
+            <div id="test_list">
+                <a id="title_distance" href={% url 'at:apis_manage' %}>单一接口用例</a>
+                <a id="title_distance" href={% url 'at:api_test_manage' %}>流程接口用例</a>
+                <a id="title_distance" href={% url 'at:web_test_manage' %}>Web测试用例</a>
+                <a id="title_distance" href={% url 'at:app_test_manage' %}>App测试用例</a>
+            </div>
+            <h3 id="add_test_name">Web用例列表</h3>
+            <a id="add_test" href={% url 'at:add_web_test' %}>＋添加Web用例</a>
+            <div id="test_search">
+                <form method="get" action="{% url 'at:web_search' %}">
+                    {% csrf_token %}
+                    <input type="search" name="web_t_name" placeholder="输入Web用例名称">&nbsp;
+                    <button id="search_b" type="submit" class="btn btn-default">搜索</button>
+                </form>
+            </div>
+
+            <form id="" method="post" action="{% url 'at:web_test_manage' %}">
+                {% csrf_token %}
+                <table class="table-striped" id="table_list">
+                    <thead>
+                    <tr id="tr_title">
+                        <th id="table_title_length">ID</th>
+                        <th id="table_title_length4">产品名称</th>
+                        <th id="table_title_length4">Web用例名称</th>
+                        <th id="table_title_length4">Web用例描述</th>
+                        <th id="table_title_length4">测试负责人</th>
+                        <th id="table_title_length4">测试结果</th>
+                        <th id="table_title_length3">时间</th>
+                        <th id="table_title_length">查看</th>
+                        <th id="table_title_length">编辑</th>
+                        <th id="table_title_length">删除</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for web_t in web_tests %}
+                        <tr id="tr_d">
+                            <td>{{ web_t.id }}</td>
+                            <td>{{ web_t.web_t_pro.p_product_name }}</td>
+                            <td>{{ web_t.web_t_name }}</td>
+                            <td>{{ web_t.web_t_desc }}</td>
+                            <td>{{ web_t.web_ter }}</td>
+                            <td>{% if web_t.web_t_res == 0 %}
+                                <a style="color: red;text-decoration: none">{{ web_t.web_t_res }}</a>
+                            {% elif web_t.web_t_res == 1 %}
+                                <a style="color: green;text-decoration: none">{{ web_t.web_t_res }}</a>
+                            {% endif %}
+                            </td>
+                            <td>{{ web_t.create_time }}</td>
+                            <td><a href="{% url "at:web_step_manage" %}?web_t.id={{ web_t.id }}"
+                                   class="glyphicon glyphicon-ok-sign" id="check_f"></a></td>
+                            <td><a style="color:cadetblue "
+                                   href="{% url 'at:web_update' %}?web_t.id={{ web_t.id }}">编辑</a></td>
+                            <td><a style="color: #cc0000" href="javascript:"
+                                   onclick="confirm_delete(this,{{ web_t.id }})">删除</a></td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </form>
+            <!--分页-->
+            <div id="pager">
+                <nav aria-label="Page navigation">
+                    <ul class="pagination">
+
+                        {% if web_tests.has_previous %}
+                            <li>
+                                <a href="?page={{ web_tests.previous_page_number }}&web_t_name={{ search_name }}"
+                                   aria-label="Previous">
+                                    <span aria-hidden="true">&laquo;</span>
+                                </a>
+                            </li>
+
+                        {% else %}
+                            <li class="disabled">
+                                <a href="#" aria-label="Next">
+                                    <span aria-hidden="true">&raquo;</span>
+                                </a>
+                            </li>
+                        {% endif %}
+
+                        {% for page_index in web_tests.paginator.page_range %}
+                            {% ifequal page_index  web_tests.number %}
+                                <li class="active">
+                                    <a style="background: cadetblue"
+                                       href="?page={{ page_index }}&web_t_name={{ search_name }}">{{ page_index }}</a>
+                                </li>
+                            {% else %}
+                                <li>
+                                    <a href="?page={{ page_index }}&web_t_name={{ search_name }}">{{ page_index }}</a>
+                                </li>
+                            {% endifequal %}
+
+                        {% endfor %}
+
+                        {% if web_tests.has_next %}
+                            <li>
+                                <a href="?page={{ web_tests.next_page_number }}&web_t_name={{ search_name }}"
+                                   aria-label="Next">
+                                    <span aria-hidden="true">&raquo;</span>
+                                </a>
+                            </li>
+                        {% else %}
+                            <li class="disabled">
+                                <a href="#" aria-label="Next">
+                                    <span aria-hidden="true">&raquo;</span>
+                                </a>
+                            </li>
+                        {% endif %}
+
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </div>
+    <script type="text/javascript">
+        //删除文章函数
+        function confirm_delete(the, web_id) {
+            {#var pro_name = $(the).parents("tr").children("td").eq(1).text();#}
+            //调用layer函数
+            layer.open({
+                type: 1,
+                skin: "layui-layer-rim",
+                area: ["190", "110px"],
+
+                //弹窗标题
+                title: "删除",
+                content: "确认删除？",
+                //点击确定后调用的回调函数
+                btn: ['确定', '取消'], yes: function () {
+                    $.ajax({
+                        url: '{% url "at:web_delete" %}',
+                        type: "GET",
+                        data: {"web_id": web_id},
+                        success: function (e) {
+                            if (e == "1") {
+                                parent.location.reload();
+                                layer.msg("已删除");
+                            } else {
+                                layer.msg("删除失败");
+                            }
+                        }
+                    })
+                },
+            })
+        }
+    </script>
+
+{% endblock %}

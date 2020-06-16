@@ -1,0 +1,19 @@
+{% extends 'home.html' %}
+{% load static %}
+{% block ext_css %}
+    {{ block.super }}
+    <link rel="stylesheet" href="{% static 'css/jenkins_page.css' %}">
+{% endblock %}
+
+{% block content %}
+    <div class="content">
+        <div id="product_content">
+            <h2 id="title_name">条件1：启动Redis cmd命令 redis-server redis.windows.conf</h2>
+            <h2 id="title_link">条件2：启动Celery worker 处理任务 python manage.py celery worker -l info</h2>
+            <h2 id="title_link1">条件3：启动Celery beat 负责把任务分发给worker python manage.py celery beat -l info</h2>
+
+        </div>
+    </div>
+
+
+{% endblock %}

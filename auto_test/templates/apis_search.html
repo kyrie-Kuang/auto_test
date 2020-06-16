@@ -1,0 +1,74 @@
+{% extends 'home.html' %}
+{% load static %}
+{% block ext_css %}
+    {{ block.super }}
+    <link rel="stylesheet" href="{% static 'css/apis_manage.css' %}">
+{% endblock %}
+
+{% block content %}
+    <div class="content">
+        <div id="test_content">
+            <div id="test_list">
+                <a id="title_distance" href={% url 'at:apis_manage' %}>单一接口用例</a>
+                <a id="title_distance" href={% url 'at:api_test_manage' %}>流程接口用例</a>
+                <a id="title_distance" href={% url 'at:web_test_manage' %}>Web测试用例</a>
+                <a id="title_distance" href={% url 'at:app_test_manage' %}>App测试用例</a>
+            </div>
+            <h3 id="add_test_name">接口用例列表</h3>
+            <a id="add_test" href={% url 'at:add_apis' %}>＋添加接口用例</a>
+            <div id="test_search">
+                <form method="get" action="{% url 'at:apis_search' %}">
+                    {% csrf_token %}
+                    <input type="search" name="api_name" placeholder="输入接口用例名称">&nbsp;
+                    <button id="search_b" type="submit" class="btn btn-default">搜索</button>
+                </form>
+            </div>
+
+
+            <form id="" method="post" action="{% url 'at:apis_manage' %}">
+                {% csrf_token %}
+                <table class="table-striped" id="table_list">
+                    <thead>
+                    <tr id="tr_title">
+                        <th id="table_title_length">ID</th>
+                        <th id="table_title_length4">产品名称</th>
+                        <th id="table_title_length4">接口用例名称</th>
+                        <th id="table_title_length2">Url地址</th>
+                        <th id="table_title_length2">请求参数和值</th>
+                        <th id="table_title_length">请求方法</th>
+                        <th id="table_title_length4">预期结果</th>
+                        <th id="table_title_length">测试结果</th>
+                        <th id="table_title_length4">时间</th>
+                        <th id="table_title_length">编辑</th>
+                        <th id="table_title_length">删除</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for apis in apis_list %}
+                        <tr id="tr_d">
+                            <td>{{ apis.id }}</td>
+                            <td>{{ apis.api_pro.p_product_name }}</td>
+                            <td>{{ apis.api_name }}</td>
+                            <td>{{ apis.api_url }}</td>
+                            <td>{{ apis.api_param_value }}</td>
+                            <td>{{ apis.api_method }}</td>
+                            <td>{{ apis.api_result }}</td>
+                            <td>{% if apis.api_status == 0 %}
+                                <a style="color: red;text-decoration: none">{{ apis.api_status }}</a>
+                            {% elif apis.api_status == 1 %}
+                                <a style="color: green;text-decoration: none">{{ apis.api_status }}</a>
+                            {% endif %}
+                            </td>
+                            <td>{{ apis.create_time }}</td>
+                            <td>编辑</td>
+                            <td>删除</td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </form>
+
+        </div>
+    </div>
+
+{% endblock %}

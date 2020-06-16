@@ -1,0 +1,22 @@
+{% extends 'home.html' %}
+{% load static %}
+{% block ext_css %}
+    {{ block.super }}
+    <link rel="stylesheet" href="{% static 'css/locust_page.css' %}">
+{% endblock %}
+
+{% block content %}
+    <div class="content">
+        <div id="product_content">
+            <h2 id="title_name">条件：安装Locust，并启动</h2>
+            <h2 id="title_link">启动命令：locust -f  .py文件 (例：.\load_test.py) --host=url地址 (例：https://www.baidu.com)</h2>
+            <h2 id="opt_link">安装操作手册：http://www.testclass.net/locust</h2>
+            <a id="locust_link" href="http://localhost:8089">
+                点击跳转Locust页面
+            </a>
+
+        </div>
+    </div>
+
+
+{% endblock %}

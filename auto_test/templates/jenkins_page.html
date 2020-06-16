@@ -1,0 +1,21 @@
+{% extends 'home.html' %}
+{% load static %}
+{% block ext_css %}
+    {{ block.super }}
+    <link rel="stylesheet" href="{% static 'css/jenkins_page.css' %}">
+{% endblock %}
+
+{% block content %}
+    <div class="content">
+        <div id="product_content">
+            <h2 id="title_name">条件：安装Jenkins，并启动</h2>
+            <h2 id="title_link">安装操作手册：http://www.testclass.net/jenkins</h2>
+            <a id="jenkins_link" href="http://localhost:8080/">
+                点击跳转Jenkins页面
+            </a>
+
+        </div>
+    </div>
+
+
+{% endblock %}

@@ -1,0 +1,87 @@
+.top {
+    background: rgba(34, 34, 34, 0.94);
+    position: absolute;
+    left: 0;
+    right: 0;
+    height: 70px;
+}
+
+#font_title {
+    position: absolute;
+    top: 13px;
+    left: 14px;
+    color: cadetblue;
+    font-size: 25px;
+    text-decoration: none;
+}
+
+
+#username {
+    position: absolute;
+    top: 20px;
+    right: 90px;
+    overflow: hidden;
+    color: cadetblue;
+    font-size: 18px;
+}
+
+#logout {
+    position: absolute;
+    top: 20px;
+    right: 30px;
+    color: cadetblue;
+    font-size: 18px;
+}
+
+.sidebar {
+    background: rgba(34, 34, 34, 0.94);
+    position: absolute;
+    left: 0;
+    top: 70px;
+    height: 100%;
+    width: 210px;
+}
+
+.content {
+    position: absolute;
+    left: 210px;
+    top: 70px;
+    right: 0;
+    height: 100%;
+}
+
+.nav {
+    list-style: none;
+    position: absolute;
+    left: 0;
+    right: 0;
+    padding: 0;
+}
+
+.nav a:link {
+    color: cadetblue;
+}
+
+.nav a:visited {
+    color: cadetblue
+}
+
+.nav a:hover {
+    color: cadetblue;
+}
+
+.nav li {
+    border: solid 1px;
+    padding: 5px 0 5px 0;
+    border-bottom-width: 0;
+}
+
+/*选择最后一个元素*/
+/*.nav li:last-child {border-bottom-width: 1px}*/
+.nav a {
+    text-decoration: none;
+}
+
+#sidebar_name {
+    font-size: 18px;
+}

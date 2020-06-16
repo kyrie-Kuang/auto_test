@@ -1,0 +1,76 @@
+{% extends 'home.html' %}
+{% load static %}
+{% block ext_css %}
+    {{ block.super }}
+    <link rel="stylesheet" href="{% static 'css/bug_manage.css' %}">
+{% endblock %}
+
+{% block content %}
+    <div class="content">
+        <div id="product_content">
+            <h3 id="add_product_name">Bug列表</h3>
+            <a id="add_product" href={% url 'at:add_bug' %}>＋添加Bug</a>
+            <div id="search_p">
+                <form method="get" action="{% url 'at:bug_search' %}">
+                    {% csrf_token %}
+                    <input style="" type="search" name="bug_name" placeholder="输入Bug名称">
+                    &nbsp;<button type="submit" id="search_b" class="btn btn-default">搜索</button>
+                </form>
+            </div>
+
+            <form id="" method="post" action="{% url 'at:bug_manage' %}">
+                {% csrf_token %}
+                <table class="table-striped" id="table_list">
+                    <thead>
+                    <tr id="tr_title">
+                        <th id="table_title_length">ID</th>
+                        <th id="table_title_length3">产品名称</th>
+                        <th id="table_title_length3">Bug名称</th>
+                        <th id="table_title_length2">Bug详情</th>
+                        <th id="table_title_length">严重程度</th>
+                        <th id="table_title_length">解决状态</th>
+                        <th id="table_title_length">创建人</th>
+                        <th id="table_title_length">分配给</th>
+                        <th id="table_title_length3">创建时间</th>
+                        <th id="table_title_length">编辑</th>
+                        <th id="table_title_length">删除</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for bug in bugs %}
+                        <tr id="tr_d">
+                            <td>{{ bug.id }}</td>
+                            <td>{{ bug.bug_pro.p_product_name }}</td>
+                            <td>{{ bug.bug_name }}</td>
+                            <td>{{ bug.bug_detail }}</td>
+                            <td>{% if bug.bug_level == "轻微" %}
+                                <a style="color:green;text-decoration: none;">{{ bug.bug_level }}</a>
+                            {% elif bug.bug_level == "一般" %}
+                                <a style="color:gold;text-decoration: none;">{{ bug.bug_level }}</a>
+                            {% elif bug.bug_level == "严重" %}
+                                <a style="color:red;text-decoration: none;">{{ bug.bug_level }}</a>
+                            {% endif %}
+                            </td>
+                            <td>{% if bug.bug_status == "激活" %}
+                                <a style="color:red;text-decoration: none;">{{ bug.bug_status }}</a>
+                            {% elif bug.bug_status == "已解决" %}
+                                <a style="color:green;text-decoration: none;">{{ bug.bug_status }}</a>
+                            {% elif bug.bug_status == "已关闭" %}
+                                <a style="color: black;text-decoration: none;">{{ bug.bug_status }}</a>
+                            {% endif %}
+                            </td>
+                            <td>{{ bug.bug_creat_er }}</td>
+                            <td>{{ bug.bug_assign }}</td>
+                            <td>{{ bug.create_time }}</td>
+                            <td>编辑</td>
+                            <td>删除</td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </form>
+
+        </div>
+    </div>
+
+{% endblock %}

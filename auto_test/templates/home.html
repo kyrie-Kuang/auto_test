@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{{ title }}</title>
+    <link rel="stylesheet" href="{% static 'css/home.css' %}">
+    <link href="https://cdn.bootcss.com/twitter-bootstrap/3.4.1/css/bootstrap.css" rel="stylesheet">
+    {% block ext_css %}
+    {% endblock %}
+    {% block header %}
+    {% endblock %}
+</head>
+<body>
+
+<div class="top">
+    <a id="font_title" href="{% url 'at:home' %}">自动化测试平台</a>
+    <p id="username">{{ username }}</p>
+    <a id="logout" href="{% url 'at:logout' %}">退出</a>
+</div>
+
+<div class="sidebar">
+
+    <ul class="nav">
+        <li><a class='glyphicon glyphicon-flag' id="sidebar_name" href="{% url 'at:product_manage' %}"> 产品中心</a></li>
+        <li><a class="glyphicon glyphicon-comment" id="sidebar_name" href="{% url 'at:apis_manage' %}"> 用例管理</a></li>
+        <li><a class="glyphicon glyphicon-leaf" id="sidebar_name" href="{% url 'at:celery_manage' %}"> 定时任务&nbsp
+            &nbsp&nbsp(Celery)</a></li>
+        <li><a class="glyphicon glyphicon-fire" id="sidebar_name" href="{% url 'at:jenkins_page' %}"> 持续集成&nbsp
+            &nbsp&nbsp(Jenkins)</a></li>
+        <li><a class="glyphicon glyphicon-eye-open" id="sidebar_name" href="{% url 'at:bug_manage' %}"> Bug管理</a></li>
+        <li><a class="glyphicon glyphicon-folder-open" id="sidebar_name" href="{% url 'at:apis_report' %}"> 测试报告</a>
+        </li>
+        <li><a class="glyphicon glyphicon-tasks" id="sidebar_name" href="{% url 'at:locust_page' %}"> 性能测试&nbsp
+            &nbsp&nbsp(Locust)</a></li>
+        <li><a class="glyphicon glyphicon-cog" id="sidebar_name" href="{% url 'at:set_manage' %}"> 系统设置</a></li>
+        {#账号admin 密码admin123456 #}
+        <li><a class="glyphicon glyphicon-home" id="sidebar_name" href="../../admin" target="_blank"> 后台管理</a></li>
+
+
+    </ul>
+</div>
+
+<div class="content">
+    <div style="position:absolute;top: 25px;left: 100px"><h1>自动化测试平台首页</h1></div>
+</div>
+
+{% block content %}
+{% endblock %}
+
+<script type="text/javascript" src="https://cdn.bootcss.com/jquery/3.1.0/jquery.js"></script>
+<script type="text/javascript" src="{% static 'layer/layer.js' %}"></script>
+<script type="text/javascript" src="https://cdn.bootcss.com/twitter-bootstrap/3.4.1/js/bootstrap.js "></script>
+
+{% block ext_js %}
+{% endblock %}
+
+</body>
+</html>

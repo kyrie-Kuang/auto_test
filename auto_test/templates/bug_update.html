@@ -1,0 +1,71 @@
+{% extends 'home.html' %}
+{% load static %}
+
+{% block ext_css %}
+    {{ block.super }}
+    <link rel="stylesheet" href="{% static 'css/add_apis.css' %}">
+{% endblock %}
+
+{% block content %}
+    <div class="content">
+        <div id="test_content_apis">
+            <h3 id="add_test_name">编辑Bug</h3>
+            <div id="title_apis">
+                <form id="product_input" method="post" action="{% url 'at:bug_update' %}?bug.id={{ bug.id }}">
+                    {% csrf_token %}
+                    <div class="form-group">
+                        <label id='product_name_distance' for="p_name_input">产品：</label>
+                        <br><br>
+                        <select class="form-control" name="dropdown">
+                            {% for pro_name in pro_names %}
+                                <option value="{{ pro_name.pk }}">
+                                    {{ pro_name.p_product_name }}
+                                </option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label id='product_name_distance' for="p_des_input">Bug名称：</label>
+                        <br><br>
+                        <input name="bug_name" type="text" class="form-control" id="p_des_input"
+                               placeholder="输入Bug名称" value="{{ bug.bug_name }}">
+                    </div>
+                    <div class="form-group">
+                        <label id='product_name_distance' for="p_er_input">详情：</label>
+                        <br><br>
+                        <input name="bug_detail" type="text" class="form-control" id="p_er_input" placeholder="输入详情" value="{{ bug.bug_detail }}">
+                    </div>
+                    <div class="form-group">
+                        <label id='product_name_distance' for="p_er_input">严重程度：</label>
+                        <br><br>
+                        <input type="checkbox" value="轻微" name="bug_level">轻微
+                        &nbsp
+                        <input type="checkbox" value="一般" name="bug_level">一般
+                        &nbsp
+                        <input type="checkbox" value="严重" name="bug_level">严重
+                    </div>
+                    <div class="form-group">
+                        <label id='product_name_distance' for="p_er_input">解决状态：</label>
+                        <br><br>
+                        <input type="checkbox" value="激活" name="bug_status">激活
+                        &nbsp
+                        <input type="checkbox" value="已解决" name="bug_status">已解决
+                        &nbsp
+                        <input type="checkbox" value="已关闭" name="bug_status">已关闭
+                    </div>
+                    <div class="form-group">
+                        <label id='product_name_distance' for="p_er_input">创建人：</label>
+                        <br><br>
+                        <input name="bug_creat_er" type="text" class="form-control" placeholder="输入创建人" value="{{ bug.bug_creat_er }}">
+                    </div>
+                    <div class="form-group">
+                        <label id='product_name_distance' for="p_er_input">分配给：</label>
+                        <br><br>
+                        <input name="bug_assign" type="text" class="form-control" placeholder="输入分配给" value="{{ bug.bug_assign }}">
+                    </div>
+                    <button type="submit" class="btn">保存</button>
+                </form>
+            </div>
+        </div>
+    </div>
+{% endblock %}

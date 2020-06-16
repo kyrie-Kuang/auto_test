@@ -1,0 +1,101 @@
+{% extends 'home.html' %}
+{% load static %}
+{% block ext_css %}
+    {{ block.super }}
+    <link rel="stylesheet" href="{% static 'css/app_step_manage.css' %}">
+{% endblock %}
+
+{% block content %}
+    <div class="content">
+        <div id="test_content">
+            <div id="test_list">
+                <a id="title_distance" href={% url 'at:apis_manage' %}>单一接口用例</a>
+                <a id="title_distance" href={% url 'at:api_test_manage' %}>流程接口用例</a>
+                <a id="title_distance" href={% url 'at:web_test_manage' %}>Web测试用例</a>
+                <a id="title_distance" href={% url 'at:app_test_manage' %}>App测试用例</a>
+            </div>
+            <h3 id="add_test_name">App用例步骤</h3>
+            <a id="add_test" href={% url 'at:add_app_step' %}>＋添加App用例步骤</a>
+
+            <form id="" method="post" action="{% url 'at:app_step_manage' %}">
+                {% csrf_token %}
+                <table class="table-striped" id="table_list">
+                    <thead>
+                    <tr id="tr_title">
+                        <th id="table_title_length3">所属用例名称</th>
+                        <th id="table_title_length3">步骤</th>
+                        <th id="table_title_length3">定位方式</th>
+                        <th id="table_title_length">控件元素</th>
+                        <th id="table_title_length4">操作方法</th>
+                        <th id="table_title_length4">测试数据</th>
+                        <th id="table_title_length">验证数据</th>
+                        <th id="table_title_length">测试结果</th>
+                        <th id="table_title_length4">时间</th>
+                        <th id="table_title_length">编辑</th>
+                        <th id="table_title_length">删除</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for app_step in app_steps %}
+                        {% if app_step.app_test.id == app_test.id %}
+                            <tr id="tr_d">
+                                <td>{{ app_step.app_test.app_t_name }}</td>
+                                <td>{{ app_step.app_step }}</td>
+                                <td>{{ app_step.app_find_method }}</td>
+                                <td>{{ app_step.app_element }}</td>
+                                <td>{{ app_step.app_opt_method }}</td>
+                                <td>{{ app_step.app_test_data }}</td>
+                                <td>{{ app_step.app_assert_data }}</td>
+                                <td>{% if app_step.app_result == 0 %}
+                                    <a style="color: red;text-decoration: none">{{ app_step.app_result }}</a>
+                                {% elif app_step.app_result == 1 %}
+                                    <a style="color: green;text-decoration: none">{{ app_step.app_result }}</a>
+                                {% endif %}
+                                </td>
+                                <td>{{ app_step.create_time }}</td>
+                                <td><a style="color:cadetblue "
+                                       href="{% url 'at:app_step_update' %}?app_step.id={{ app_step.id }}">编辑</a></td>
+                                <td><a style="color: #cc0000" href="javascript:"
+                                       onclick="confirm_delete(this,{{ app_step.id }})">删除</a></td>
+                            </tr>
+                        {% endif %}
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </form>
+        </div>
+    </div>
+    <script type="text/javascript">
+        //删除文章函数
+        function confirm_delete(the, app_step_id) {
+            {#var pro_name = $(the).parents("tr").children("td").eq(1).text();#}
+            //调用layer函数
+            layer.open({
+                type: 1,
+                skin: "layui-layer-rim",
+                area: ["190", "110px"],
+
+                //弹窗标题
+                title: "删除",
+                content: "确认删除？",
+                //点击确定后调用的回调函数
+                btn: ['确定', '取消'], yes: function () {
+                    $.ajax({
+                        url: '{% url "at:app_step_delete" %}',
+                        type: "GET",
+                        data: {"app_step_id": app_step_id},
+                        success: function (e) {
+                            if (e == "1") {
+                                parent.location.reload();
+                                layer.msg("已删除");
+                            } else {
+                                layer.msg("删除失败");
+                            }
+                        }
+                    })
+                },
+            })
+        }
+    </script>
+
+{% endblock %}

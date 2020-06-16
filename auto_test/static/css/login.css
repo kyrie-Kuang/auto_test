@@ -1,0 +1,17 @@
+#user_input{
+    top: 100px;
+    position: absolute;
+    left: 800px;
+}
+
+#btn{
+    background: cadetblue;
+    position: absolute;
+    right: 50px;
+    width: 100px;
+}
+
+#login_name{
+    color: black;
+}
+

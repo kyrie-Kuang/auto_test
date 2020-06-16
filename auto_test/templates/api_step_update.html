@@ -1,0 +1,74 @@
+{% extends 'home.html' %}
+{% load static %}
+
+{% block ext_css %}
+    {{ block.super }}
+    <link rel="stylesheet" href="{% static 'css/add_apis.css' %}">
+{% endblock %}
+
+{% block content %}
+    <div class="content">
+        <div id="test_content_apis">
+            <h3 id="add_test_name">编辑接口用例步骤</h3>
+            <div id="title_apis">
+                <form id="product_input" method="post" action="{% url 'at:api_step_update' %}?api_step.id={{ api_step.id }}">
+                    {% csrf_token %}
+                    <div class="form-group">
+                        <label id='product_name_distance' for="p_name_input">所属用例：</label>
+                        <br><br>
+                        <select class="form-control" name="dropdown">
+                            {% for api_test in api_tests %}
+                                <option value="{{ api_test.pk }}">
+                                    {{ api_test.api_t_name }}
+                                </option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label id='product_name_distance' for="p_des_input">测试步骤：</label>
+                        <br><br>
+                        <input name="api_step" type="text" class="form-control" id="p_des_input"
+                               placeholder="输入测试步骤（如1,2,3...）" value="{{ api_step.api_step }}">
+                    </div>
+                    <div class="form-group">
+                        <label id='product_name_distance' for="p_des_input">测试步骤内容：</label>
+                        <br><br>
+                        <input name="api_name" type="text" class="form-control" id="p_des_input"
+                               placeholder="输入测试步骤内容" value="{{ api_step.api_name }}">
+                    </div>
+                    <div class="form-group">
+                        <label id='product_name_distance' for="p_er_input">Url地址：</label>
+                        <br><br>
+                        <input name="api_url" type="text" class="form-control" id="p_er_input" placeholder="输入Url地址" value="{{ api_step.api_url }}">
+                    </div>
+                    <div class="form-group">
+                        <label id='product_name_distance' for="p_er_input">请求参数和值：</label>
+                        <br><br>
+                        <input name="api_param_value" type="text" class="form-control" id="p_er_input"
+                               placeholder="输入请求参数和值" value="{{ api_step.api_param_value }}">
+                    </div>
+                    <div class="form-group">
+                        <label id='product_name_distance' for="p_er_input">请求方法：</label>
+                        <br><br>
+                        <input type="checkbox" value="get" name="method_check">get
+                        &nbsp
+                        <input type="checkbox" value="post" name="method_check">post
+                    </div>
+                    <div class="form-group">
+                        <label id='product_name_distance' for="p_er_input">预期结果：</label>
+                        <br><br>
+                        <input name="api_result" type="text" class="form-control" placeholder="输入预期结果" value="{{ api_step.api_result }}">
+                    </div>
+                    <div class="form-group">
+                        <label id='product_name_distance' for="p_er_input">测试结果：</label>
+                        <br><br>
+                        <input name="api_status" value="1" type="checkbox">True
+                        &nbsp
+                        <input name="api_status" value="0" type="checkbox">False
+                    </div>
+                    <button type="submit" class="btn">保存</button>
+                </form>
+            </div>
+        </div>
+    </div>
+{% endblock %}
