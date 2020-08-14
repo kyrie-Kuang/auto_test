@@ -1,5 +1,5 @@
 # auto_test
-通过Python+Django+Bootstrap编写的自动化测试平台。
+通过Python+Django+Bootstrap编写的自动化测试平台。（优化后的代码在atp项目中）
 
 可在平台上进行，接口，app，web自动化测试用例编写，并执行对应用例py文件，生成html测试报告，含提BUG功能；
 可在平台进行Celery异步任务，定时任务执行；
